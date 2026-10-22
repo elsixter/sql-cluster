@@ -41,6 +41,61 @@ sudo -u postgres /usr/lib/postgresql/16/bin/pg_ctl \
 start
 ```
 
+## 5. Verificar el estado del clúster
+
+```bash
+sudo -u postgres /usr/lib/postgresql/16/bin/pg_ctl \
+-D /var/lib/postgresql/manual status
+```
+
+Permite comprobar si el servidor está en ejecución.
+
+## 6. Conectarse al clúster
+
+```bash
+sudo -u postgres psql -p 5437 -d postgres
+```
+
+Dentro de `psql`, verificar el puerto y el directorio de datos:
+
+```sql
+SHOW port;
+SHOW data_directory;
+```
+
+Los resultados esperados son `5437` y `/var/lib/postgresql/manual`, respectivamente.
+
+Para salir de `psql`:
+
+```text
+\q
+```
+
+## 7. Detener el clúster
+
+```bash
+sudo -u postgres /usr/lib/postgresql/16/bin/pg_ctl \
+-D /var/lib/postgresql/manual stop
+```
+
+El comando solicita un apagado controlado del servidor.
+
+## 8. Reiniciar el clúster
+
+```bash
+sudo -u postgres /usr/lib/postgresql/16/bin/pg_ctl \
+-D /var/lib/postgresql/manual \
+-l /var/lib/postgresql/manual/server.log \
+start
+```
+
+Después del inicio, comprobar nuevamente el estado con `pg_ctl status`.
+
+## Resultado
+
+Se creó y administró un clúster PostgreSQL independiente en `/var/lib/postgresql/manual`, configurado para utilizar el puerto `5437`. Se practicaron las operaciones de inicio, consulta de estado, conexión y apagado controlado sin modificar el clúster existente.
+
+
 - `-D`: especifica el directorio del clúster.
 - `-l`: indica dónde guardar el registro del servidor.
 - `start`: inicia PostgreSQL.
